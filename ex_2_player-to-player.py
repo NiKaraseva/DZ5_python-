@@ -28,10 +28,10 @@ def Game():
         if move in array:
             array[move - 1] = xo
             PrintField(array)
-            if ChekWin(xo, array):
+            if CheckWin(xo, array):
                 print(f'Поздравляем, {xo} красавчик!')
                 break
-            elif ChekDraw(array):
+            elif CheckDraw(array):
                 print(f'НИЧЬЯ!')
                 break
             xo = x if xo == o else o
@@ -40,7 +40,7 @@ def Game():
             continue
 
 
-def ChekWin(simb: str, field: list):
+def CheckWin(simb: str, field: list):
     win = ((0, 1, 2), (3, 4, 5,), (6, 7, 8), (0, 3, 6), (1, 4, 7), (2, 5, 8), (0, 4, 8), (2, 4, 6))
     for i in win:
         for j in i:
@@ -54,7 +54,7 @@ def ChekWin(simb: str, field: list):
         return False
 
 
-def ChekDraw(field: list):
+def CheckDraw(field: list):
     for i in range(1, 10):
         if i in field:
             return False
