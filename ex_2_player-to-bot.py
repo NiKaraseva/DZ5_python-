@@ -2,7 +2,7 @@
 import random
 from random import randint as rnd
 
-def PrintField():
+def PrintField(field: list):
 
     print(f' {field[0]} | {field[1]} | {field[2]} ')
     print('–––––––––––')
@@ -11,7 +11,7 @@ def PrintField():
     print(f' {field[6]} | {field[7]} | {field[8]} ')
 
 
-# array = list(range(1, 10))
+array = list(range(1, 10))
 x = chr(10060)
 o = chr(11093)
 win = ((0, 1, 2), (3, 4, 5), (6, 7, 8), (0, 3, 6), (1, 4, 7), (2, 5, 8), (0, 4, 8), (2, 4, 6))
@@ -37,42 +37,45 @@ def PlayerTurn(simb: str, field: list):
                 print('Увы, ничья!')
                 break
             else:
-                BotTurn(o, array)
+                BotTurn(o, field)
         else:
             print('Неверный ход! Попробуйте ещё раз :)')
             continue
 
 
-def BotTurn(simb: str, field: str):
+
+def BotTurn(simb: str, field: list):
     global win
     while True:
         if field[4].isdigit():
-            return 5
+            field[4] = simb
         else:
             corner = [0, 2, 6, 8]
             random.shuffle(corner)
             for opt in win:
                 if (field[opt[0]] == field[opt[1]] == simb) and field[opt[2]].isdigit():
-                    return 3
-                if (field[opt[1]] == field[opt[2]] == simb) and field[opt[0]].isdigit():
-                    return 1
-                if (field[opt[0]] == field[opt[2]] == simb) and field[opt[0]].isdigit():
-                    return 2
+                    field[opt[2]] = simb
+                elif (field[opt[1]] == field[opt[2]] == simb) and field[opt[0]].isdigit():
+                    field[opt[0]] = simb
+                elif (field[opt[0]] == field[opt[2]] == simb) and field[opt[1]].isdigit():
+                    field[opt[1]] = simb
             for opt in win:
-                if (field[opt[0]] == field[opt[1]] == 'x') and field[opt[2]].isdigit():
-                    return 3
-                if (field[opt[1]] == field[opt[2]] == 'x') and field[opt[0]].isdigit():
-                    return 1
-                if (field[opt[0]] == field[opt[2]] == 'x') and field[opt[0]].isdigit():
-                    return 2
+                if (field[opt[0]] == field[opt[1]] != simb) and field[opt[2]].isdigit():
+                    field[opt[2]] = simb
+                elif (field[opt[1]] == field[opt[2]] != simb) and field[opt[0]].isdigit():
+                    field[opt[0]] = simb
+                elif (field[opt[0]] == field[opt[2]] != simb) and field[opt[1]].isdigit():
+                    field[opt[1]] = simb
             for cell in corner:
                 if field[cell].isdigit():
-                    return cell + 1
+                    field[cell] = simb
+                    break
             else:
                 turn = random.randint(1, 9)
                 if field[turn].isdigit():
-                    return turn + 1
-        PrintField()
+                    field[turn] = simb
+                    break
+        PrintField(array)
         if CheckWin(o, array):
             print('Бот выиграл!')
             break
